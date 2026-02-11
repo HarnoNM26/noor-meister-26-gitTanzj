@@ -6,7 +6,8 @@ import { createDbConnection } from './utils/mysql'
 import { Migrator, FileMigrationProvider } from 'kysely'
 import { promises as fs } from 'fs';
 import * as path from 'path';
-
+import multipart from '@fastify/multipart'
+import { ensureUploadDir } from './utils/fs'
 export interface AppOptions extends FastifyServerOptions, Partial<AutoloadPluginOptions> {
 
 }
@@ -34,18 +35,22 @@ const app: FastifyPluginAsync<AppOptions> = async (
   })
   
   const migrations = async () => {
-    const { results, error } = await migrator.migrateToLatest();
+    const { error } = await migrator.migrateToLatest();
     
     if (error) {
       console.error('error', error)
       return;
     }
-    
-    results?.forEach(it => {
-      console.log('it', it)
-    })
   }
+
   migrations();
+
+  fastify.register(multipart);
+  ensureUploadDir();
+
+  fastify.addHook('onClose', async (instance) => {
+    await migrator.migrateDown();
+  });
   // Do not touch the following lines
 
   // This loads all plugins defined in plugins

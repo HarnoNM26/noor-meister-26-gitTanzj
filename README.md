@@ -15,6 +15,9 @@ Jooksuta seda käsklust
 #### Fastify:
 Backend raamistik, mis võimaladb päringute skeema validatsiooni out-of-box ning muid integratsioone läbi pluginate
 
+#### @sinclair/typebox
+Tüüpide loomise raamistik millega on võimalik läbi viia skeema validatsioonie ruuterites
+
 #### Vite
 Frontend bundler, millega on võimalik luua react frontend äppi
 

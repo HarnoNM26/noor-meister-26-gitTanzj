@@ -8,6 +8,6 @@ interface EnergyReadingTable {
 }
 
 export interface Database {
-    energy_reading: EnergyReadingTable
+    EnergyReading: EnergyReadingTable
 }
 

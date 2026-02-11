@@ -6,11 +6,11 @@ console.log('Running migrations up')
   await db.schema
     .createTable('EnergyReading')
     .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn('timestamp', 'timestamp', (col) => col.notNull())
+    .addColumn('timestamp', 'varchar(50)', (col) => col.notNull())
     .addColumn('location', 'varchar(100)', (col) => col.notNull())
     .addColumn('price_eur_mwh', 'numeric')
     .addColumn('source', sql`enum("UPLOAD", "API")`, (col) => col.notNull())
-    .addColumn('created_at', 'timestamp', (col) => col.defaultTo(sql`now()`).notNull())
+    .addColumn('created_at', 'varchar(100)', (col) => col.notNull())
     .execute();
 }
 
