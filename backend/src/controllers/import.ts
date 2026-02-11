@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { cleanEnergyImport } from "../helpers/validateEnergyImport";
+import { cleanEnergyData } from "../helpers/validateEnergyImport";
 import * as energyReadingModel from '../models/energyReading'
 
 export const importJson = {
@@ -20,7 +20,7 @@ export const importJson = {
             cleanedData,
             succeeded,
             skipped
-        } = cleanEnergyImport(fileAsJson);
+        } = cleanEnergyData(fileAsJson, true);
 
         try {
             cleanedData.forEach(async (piece) => {

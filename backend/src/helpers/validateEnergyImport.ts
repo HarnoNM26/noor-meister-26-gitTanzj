@@ -17,13 +17,15 @@ const validateTimestamp = (timestamp: string) => {
     }
 }
 
-export const cleanEnergyImport = (data: Array<{
+export const cleanEnergyData = (data: Array<{
     timestamp: string,
     location?: string,
     price_eur_mwh: string | number,
-    price: number
-}>) => {
+    price?: number,
+    source: "UPLOAD" | "API"
+}>, ignoreDuplicates: boolean) => {
     const resData: Array<InsertableData> = [];
+    let allDuplicates: any[] = [];
     let skipped = 0;
     let succeeded = 0;
     
@@ -39,7 +41,7 @@ export const cleanEnergyImport = (data: Array<{
             timestamp?: string,
             location?: string,
             price_eur_mwh?: number,
-            source: "UPLOAD"
+            source: "UPLOAD" | "API"
         }
         const validatedTimestamp = validateTimestamp(data[i].timestamp);
         if (!validatedTimestamp?.success) {
@@ -62,13 +64,18 @@ export const cleanEnergyImport = (data: Array<{
             continue;
         }
 
+        if (data[i].source) {
+            insert.source = data[i].source;
+        }
+
         const duplicates = resData.filter((elem) => {
             elem.timestamp === insert.timestamp ||
             elem.location === insert.location
         })
 
-        if (duplicates.length > 0) {
+        if (duplicates.length > 0 && ignoreDuplicates) {
             skipped++;
+            allDuplicates = [...allDuplicates, ...duplicates]
             console.log('skipped because it is duplicate')
             continue;
         }
@@ -80,6 +87,7 @@ export const cleanEnergyImport = (data: Array<{
     return {
         cleanedData: resData,
         succeeded,
-        skipped
+        skipped,
+        allDuplicates
     };
 }

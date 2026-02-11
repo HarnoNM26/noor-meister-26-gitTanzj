@@ -24,3 +24,5 @@ Frontend bundler, millega on võimalik luua react frontend äppi
 #### Kysely
 Andmebaasi ORM, mis võimaldab natiivsete SQL päringute koostamist
 
+#### @mui/x-date-pickers
+Visuaalsed komponendid andmete haldamiseks

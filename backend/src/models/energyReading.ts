@@ -30,6 +30,16 @@ export const getAll = async (db: Kysely<Database>, {
     };
 }
 
+export const deleteByTimestampAndLocation = async (db: Kysely<Database>, timestamp:string, location: 'EE' | 'LV' | 'FI') => {
+    const response = await db
+        .deleteFrom('EnergyReading')
+        .where('EnergyReading.location', '=', location)
+        .where('EnergyReading.timestamp', '=', timestamp)
+        .execute();
+    
+    return response;
+}
+
 export const createEnergyReading = async (db: Kysely<Database>, data: InsertableData) => {
     const randomID = Math.random() * 1000000000;
     const response = await db
@@ -40,7 +50,7 @@ export const createEnergyReading = async (db: Kysely<Database>, data: Insertable
             source: data.source,
             location: data.location,
             price_eur_mwh: data.price_eur_mwh,
-            created_at: Date.now().toLocaleString()
+            created_at: (new Date()).toISOString()
         })
         .execute();
 
@@ -55,4 +65,12 @@ export const createEnergyReading = async (db: Kysely<Database>, data: Insertable
     return { 
         success: true
     }
+}
+
+export const deleteEnergyReading = async (db: Kysely<Database>, id: number) => {
+    const result = await db.deleteFrom('EnergyReading')
+        .where('EnergyReading.id', '=', id)
+        .execute();
+
+    return result;
 }

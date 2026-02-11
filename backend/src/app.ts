@@ -8,6 +8,7 @@ import { promises as fs } from 'fs';
 import * as path from 'path';
 import multipart from '@fastify/multipart'
 import { ensureUploadDir } from './utils/fs'
+import EleringService from './services/elering'
 export interface AppOptions extends FastifyServerOptions, Partial<AutoloadPluginOptions> {
 
 }
@@ -51,6 +52,10 @@ const app: FastifyPluginAsync<AppOptions> = async (
   fastify.addHook('onClose', async (instance) => {
     await migrator.migrateDown();
   });
+
+  const eleringService = new EleringService();
+  fastify.decorate('eleringService', eleringService);
+  fastify.decorateRequest('eleringService', { getter() { return eleringService }});
   // Do not touch the following lines
 
   // This loads all plugins defined in plugins
