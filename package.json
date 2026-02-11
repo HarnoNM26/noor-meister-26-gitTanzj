@@ -1,0 +1,7 @@
+{
+    "scripts": {
+        "create-db": "docker run --name mysql -e MYSQL_ROOT_PASSWORD=root MYSQL_DATABASE=db -d mysql/mysql:latest",
+        "create-services": "cd client && npm run dev && cd ../backend && npm run dev",
+        "create-nm": "npm run create-db && npm run create-services"
+    }
+}
