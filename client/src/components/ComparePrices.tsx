@@ -15,7 +15,9 @@ export const ComparePrices = ({
     const seriesUsed = useMemo(() => {
         return {
             id: locationFilter,
-            data: data?.filter((elem) => elem.location === locationFilter).map((elem) => elem.price_eur_mwh)
+            data: data?.filter((elem) => elem.location === locationFilter).map((elem) => elem.price_eur_mwh),
+            area: true,
+            showMark: false
         }
     }, [data, locationFilter])
 
@@ -29,10 +31,10 @@ export const ComparePrices = ({
         <LineChart
             xAxis={[{
                 data: data.map((elem) => new Date(elem.timestamp)),
-                scaleType: 'time'
+                scaleType: 'time',
             }]}
             series={[
-                seriesUsed
+                seriesUsed,
             ]}
             height={200}
         />

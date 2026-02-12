@@ -45,3 +45,9 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
+
+.date-picker-container {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}

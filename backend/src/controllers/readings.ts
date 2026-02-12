@@ -20,7 +20,7 @@ export const getReadings = {
             return;
         }
 
-        const data = await energyReadingModel.getAll(req.db, filters);
+        const data = await energyReadingModel.getAll(req.db, filters, false);
 
         rep.status(200).send({
             data

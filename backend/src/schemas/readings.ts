@@ -29,3 +29,14 @@ export const DeleteReadingsQuerySchema = Type.Object({
 
 export type DeleteReadingsQueryType = Static<typeof DeleteReadingsQuerySchema>;
  
+export const GetInsightsQuerySchema = Type.Object({
+    start: Type.String(),
+    end: Type.String(),
+    location: Type.Union([
+        Type.Literal('EE'),
+        Type.Literal('LV'),
+        Type.Literal('FI')
+    ])
+})
+
+export type GetInsightsQueryType = Static<typeof GetInsightsQuerySchema>

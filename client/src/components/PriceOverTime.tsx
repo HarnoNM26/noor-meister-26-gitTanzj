@@ -17,8 +17,9 @@ export const PriceOverTime = ({
             <h1>Price over time</h1>
             <LineChart
                 xAxis={[{ scaleType: 'time', data: data.map((i) => new Date(i.timestamp)) }]}
-                series={[{ data: data.map((i) => i.price_eur_mwh )}]}
+                series={[{ data: data.map((i) => i.price_eur_mwh ), area: true, showMark: false }]}
                 height={200}
+                
             />
         </div>
     )

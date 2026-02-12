@@ -6,7 +6,7 @@ export const getAll = async (db: Kysely<Database>, {
     start,
     end,
     location
-}: { start?: string, end?:string, location?: string}) => {
+}: { start?: string, end?:string, location?: string}, price_eur_mwh_present: boolean) => {
     const query = db
         .selectFrom('EnergyReading')
         .selectAll()
@@ -20,7 +20,11 @@ export const getAll = async (db: Kysely<Database>, {
     }
 
     if (location) {
-        query.where('EnergyReading.location', '=', location)
+        query.where('EnergyReading.location', '=', location);
+    }
+
+    if (price_eur_mwh_present) {
+        query.where('EnergyReading.price_eur_mwh', "!=", null);
     }
 
     const response = await query.execute()

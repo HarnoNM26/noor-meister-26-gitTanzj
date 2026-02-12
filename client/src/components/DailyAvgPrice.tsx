@@ -36,7 +36,7 @@ export const DailyAvgPrice = ({
         <h1>Daily average price</h1>
         <LineChart
             xAxis={[{ scaleType: 'time', data: Object.keys(avgData) }]}
-            series={[{ data: avgPrices }]}
+            series={[{ data: avgPrices, area: true, showMark: false }]}
             height={200}
         />
     </div>
