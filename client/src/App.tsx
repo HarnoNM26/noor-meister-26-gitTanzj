@@ -53,6 +53,22 @@ function App() {
     }
   }
 
+  const deleteUploadRecords = async () => {
+    const response = await axiosInstance.delete('/api/readings', {
+      params: {
+        source: "UPLOAD"
+      }
+    })
+
+    if (response.status >= 200) {
+      getReadings();
+      setSuccessMessage(response.data.message)
+    } else {
+      setErrorMsg(response.data.message)
+    }
+    setLoading(false);
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       await getReadings();
@@ -109,6 +125,12 @@ function App() {
               disabled={loading}
             >
               {loading ? '...Loading' : 'Sync Prices'}
+            </button>
+            <button
+              onClick={deleteUploadRecords}
+              disabled={loading}
+            >
+              {loading ? '...Loading' : "Delete UPLOAD data"}
             </button>
           </div>
         </div>

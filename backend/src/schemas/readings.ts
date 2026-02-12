@@ -19,4 +19,13 @@ export const PostSyncPricesParamsSchema = Type.Object({
 })
 
 export type PostSyncPricesParamsType = Static<typeof PostSyncPricesParamsSchema>
+
+export const DeleteReadingsQuerySchema = Type.Object({
+    source: Type.Union([
+        Type.Literal('UPLOAD'),
+        Type.Literal('API')
+    ])
+})
+
+export type DeleteReadingsQueryType = Static<typeof DeleteReadingsQuerySchema>;
  

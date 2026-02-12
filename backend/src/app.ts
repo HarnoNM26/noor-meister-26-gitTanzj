@@ -20,7 +20,9 @@ const app: FastifyPluginAsync<AppOptions> = async (
   fastify,
   opts
 ): Promise<void> => {
-  fastify.register(fastifyCors);
+  fastify.register(fastifyCors, {
+    methods: ['GET', 'POST', 'PUT', 'DELETE']
+  });
 
   const db = createDbConnection();
   fastify.decorate('db', db);

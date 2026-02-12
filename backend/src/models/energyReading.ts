@@ -76,3 +76,11 @@ export const deleteEnergyReading = async (db: Kysely<Database>, id: number) => {
 
     return result;
 }
+
+export const deleteEnergyReadingBySource = async (db: Kysely<Database>, source: "UPLOAD" | "API") => {
+    const result = await db.deleteFrom('EnergyReading')
+        .where('EnergyReading.source', '=', source)
+        .execute();
+
+    return result;
+}
