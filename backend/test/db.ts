@@ -1,12 +1,12 @@
 import { createPool } from "mysql2";
-import { Database } from "../types/database.types";
+import { Database } from "../src/types/database.types";
 import { Kysely, MysqlDialect } from "kysely";
 
 export const createDbConnection = () => {
     const dialect = new MysqlDialect({
         pool: createPool({
             database: "db",
-            host: "mysql",
+            host: "localhost",
             user: "root",
             password: "root"
         })

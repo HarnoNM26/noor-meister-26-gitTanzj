@@ -13,7 +13,6 @@ import { ComparePrices } from './components/ComparePrices';
 
 function App() {
   const [data, setData] = useState<InsertableData[]>([]);
-  console.log('data', data)
   const [successMessage, setSuccessMessage] = useState<string>();
   const [errorMsg, setErrorMsg] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);

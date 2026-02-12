@@ -22,7 +22,7 @@ export const cleanEnergyData = (data: Array<{
     location?: string,
     price_eur_mwh: string | number,
     price?: number,
-    source: "UPLOAD" | "API"
+    source?: "UPLOAD" | "API"
 }>, ignoreDuplicates: boolean) => {
     const resData: Array<InsertableData> = [];
     let allDuplicates: any[] = [];
@@ -65,7 +65,7 @@ export const cleanEnergyData = (data: Array<{
         }
 
         if (data[i].source) {
-            insert.source = data[i].source;
+            insert.source = data[i].source ?? "UPLOAD";
         }
 
         const duplicates = resData.filter((elem) => {

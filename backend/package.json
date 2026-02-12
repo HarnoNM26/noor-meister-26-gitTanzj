@@ -7,7 +7,11 @@
     "test": "test"
   },
   "scripts": {
-    "test": "npm run build:ts && tsc -p test/tsconfig.json && c8 node --test -r ts-node/register \"test/**/*.ts\"",
+    "db-up": "docker run -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=db -d mysql:latest",
+    "db-down": "docker stop mysql && docker rm mysql",
+    "test:api": "npm run db-up && jest && npm run db-down",
+    "test:unit": "jest ./test/unit",
+    "test-node": "npm run build:ts && tsc -p test/tsconfig.json && c8 node --test -r ts-node/register \"test/**/*.ts\"",
     "start": "npm run build:ts && fastify start -l info dist/app.js",
     "build:ts": "tsc",
     "watch:ts": "tsc -w",
@@ -23,12 +27,15 @@
     "@fastify/multipart": "^9.4.0",
     "@fastify/sensible": "^6.0.0",
     "@types/axios": "^0.9.36",
+    "@types/jest": "^30.0.0",
     "axios": "^1.13.5",
     "fastify": "^5.0.0",
     "fastify-cli": "^7.4.1",
     "fastify-plugin": "^5.0.0",
+    "jest": "^30.2.0",
     "kysely": "^0.28.11",
-    "mysql2": "^3.17.0"
+    "mysql2": "^3.17.0",
+    "ts-jest": "^29.4.6"
   },
   "devDependencies": {
     "@sinclair/typebox": "^0.34.48",

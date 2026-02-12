@@ -20,7 +20,6 @@ export const getAll = async (db: Kysely<Database>, {
     }
 
     if (location) {
-        console.log('query locatiopn', location)
         query.where('EnergyReading.location', '=', location)
     }
 
