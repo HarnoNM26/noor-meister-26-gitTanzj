@@ -46,6 +46,64 @@ Backend võimaldab järgmised endpointid:
 `DELETE /api/readings` - Kustutab kõik andmed vastavate filtritega
 `POST /api/import/json` - Puhastab, filtreerib ning sisestab andmebaasi kõik lisatud JSON andmed
 `POST /api/sync/prices` - Pärib hinnaandmed välisest https://dashboard.elering.ee APIst ning sisetab need andmebaasi vältides duplikaate
+`GET /api/insights/prices` - Saadab kõikide andmete pealt tehtud arvutused sealhulgas keskmine hind, kõige odavamad ajad ning kõige kallimad ajad. Response võib näha välja järgmine:
+`
+    {
+    "average_price": 179.02,
+    "cheapest_slots": [
+        {
+            "id": 421134269,
+            "timestamp": "2026-02-13T03:00:00.000Z",
+            "location": "EE",
+            "price_eur_mwh": "95",
+            "source": "API",
+            "created_at": "2026-02-12T14:44:30.260Z"
+        },
+        {
+            "id": 737535126,
+            "timestamp": "2026-02-08T22:45:00.000Z",
+            "location": "EE",
+            "price_eur_mwh": "95",
+            "source": "API",
+            "created_at": "2026-02-12T14:44:30.038Z"
+        },
+        {
+            "id": 129060750,
+            "timestamp": "2026-02-09T00:45:00.000Z",
+            "location": "EE",
+            "price_eur_mwh": "96",
+            "source": "API",
+            "created_at": "2026-02-12T14:44:30.037Z"
+        }
+    ],
+    "most_expensive_slots": [
+        {
+            "id": 915755896,
+            "timestamp": "2026-02-11T05:45:00.000Z",
+            "location": "EE",
+            "price_eur_mwh": "390",
+            "source": "API",
+            "created_at": "2026-02-12T14:44:30.124Z"
+        },
+        {
+            "id": 540128053,
+            "timestamp": "2026-02-10T06:45:00.000Z",
+            "location": "EE",
+            "price_eur_mwh": "348",
+            "source": "API",
+            "created_at": "2026-02-12T14:44:30.064Z"
+        },
+        {
+            "id": 169075624,
+            "timestamp": "2026-02-10T17:00:00.000Z",
+            "location": "EE",
+            "price_eur_mwh": "337",
+            "source": "API",
+            "created_at": "2026-02-12T14:44:30.074Z"
+        }
+    ]
+}
+`
 
 ### Suuremad moodulid
 
