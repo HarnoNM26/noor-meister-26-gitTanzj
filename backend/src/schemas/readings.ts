@@ -12,9 +12,9 @@ export const PostSyncPricesParamsSchema = Type.Object({
     start: Type.Optional(Type.String()),
     end: Type.Optional(Type.String()),
     location: Type.Optional(Type.Union([
-        Type.Literal('ee'),
-        Type.Literal('lv'),
-        Type.Literal('fi')
+        Type.Literal('EE'),
+        Type.Literal('LV'),
+        Type.Literal('FI')
     ]))
 })
 

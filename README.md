@@ -5,11 +5,6 @@
 Jooksuta järgmist käsku, et luua client, backend ja andmebaas ning jooksutada migratsioone
 `docker-compose up --build`
 
-või
-
-Jooksuta seda käsklust
-`npm run create-nm`
-
 ### Suuremad moodulid
 
 #### Fastify:
@@ -26,3 +21,6 @@ Andmebaasi ORM, mis võimaldab natiivsete SQL päringute koostamist
 
 #### @mui/x-date-pickers
 Visuaalsed komponendid andmete haldamiseks
+
+#### @mui/x-charts
+Visuaalsed komponendid graafikute koostamiseks

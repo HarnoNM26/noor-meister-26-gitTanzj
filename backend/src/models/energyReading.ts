@@ -9,6 +9,7 @@ export const getAll = async (db: Kysely<Database>, {
 }: { start?: string, end?:string, location?: string}) => {
     const query = db
         .selectFrom('EnergyReading')
+        .selectAll()
     
     if (start) {
         query.where('EnergyReading.timestamp', '>', start);
@@ -19,10 +20,11 @@ export const getAll = async (db: Kysely<Database>, {
     }
 
     if (location) {
+        console.log('query locatiopn', location)
         query.where('EnergyReading.location', '=', location)
     }
 
-    const response = await query.selectAll().execute()
+    const response = await query.execute()
 
     return {
         success: true,

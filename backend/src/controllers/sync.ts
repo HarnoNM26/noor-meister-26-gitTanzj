@@ -9,13 +9,13 @@ export const syncPrices = {
         querystring: PostSyncPricesParamsSchema
     },
     async handler (req: FastifyRequest<{
-        Params: PostSyncPricesParamsType
+        Querystring: PostSyncPricesParamsType
     }>, rep: FastifyReply) {
         const {
             start,
             end,
             location
-        } = req.params;
+        } = req.query;
 
         const locationLower = location?.toLowerCase() as 'ee' | 'lv' | 'fi' | undefined;
 
@@ -34,7 +34,7 @@ export const syncPrices = {
 
         try {
             const cleaned = cleanEnergyData(priceData!.map((eleringDataPiece) => ({
-                timestamp: (new Date(eleringDataPiece.timestamp)).toISOString(),
+                timestamp: new Date(eleringDataPiece.timestamp * 1000).toISOString(),
                 price_eur_mwh: eleringDataPiece.price,
                 source: "API"
             })), true);

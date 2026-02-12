@@ -8,9 +8,9 @@ export const getReadings = {
     },
     async handler (req: FastifyRequest<
         {
-            Params: GetReadingsParamsSchemaType
+            Querystring: GetReadingsParamsSchemaType
         }>, rep: FastifyReply) {
-        const filters = req.params;
+        const filters = req.query;
         const data = await energyReadingModel.getAll(req.db, filters);
 
         rep.status(200).send({

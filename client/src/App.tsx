@@ -1,13 +1,18 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import axiosInstance from './utils/axiosInstance';
 import './App.css'
 import { DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import type { Dayjs } from 'dayjs';
+import { PriceOverTime } from './components/PriceOverTime';
+import type { InsertableData } from './types';
+import { DailyAvgPrice } from './components/DailyAvgPrice';
+import { AvgPricePerLocation } from './components/AvgPricePerLocation';
+import { ComparePrices } from './components/ComparePrices';
 
 function App() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<InsertableData[]>([]);
   console.log('data', data)
   const [successMessage, setSuccessMessage] = useState<string>();
   const [errorMsg, setErrorMsg] = useState<string>();
@@ -15,21 +20,31 @@ function App() {
 
   const [startDate, setStartDate] = useState<Dayjs | null>();
   const [endDate, setEndDate] = useState<Dayjs | null>();
-  const [location, setLocation] = useState<'ee' | 'lv' | 'fi'>('ee');
+  const [location, setLocation] = useState<'EE' | 'LV' | 'FI'>('EE');
+
+  const getReadings = async () => {
+    const response = await axiosInstance.get('/api/readings', {
+      params: {
+        start: startDate?.toISOString(),
+        end: endDate?.toISOString(),
+        location
+      }
+    })
+    setData(response.data.data.data);
+  }
 
   const syncPrices = async () => {
     setLoading(true);
-    const response = await axiosInstance.post('/api/sync/prices', {
+    const response = await axiosInstance.post('/api/sync/prices', {}, {
       params: {
-        start: startDate,
-        end: endDate,
+        start: startDate?.toISOString(),
+        end: endDate?.toISOString(),
         location
       }
     })
 
-    if (response.status === 200) {
-      console.log('response', response)
-      setData(response.data.data)
+    if (response.status === 201) {
+      await getReadings();
       setSuccessMessage('Data has been successfully synced')
       setLoading(false);
     } else {
@@ -40,17 +55,41 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axiosInstance.get('/api/readings')
-      setData(response.data.data.data);
+      await getReadings();
     }
 
     fetchData();
   }, [])
 
+  const orderedData = useMemo(() => {
+    return data?.sort((a, b) => {
+        const aDate = (new Date(a.timestamp)).getTime();
+        const bDate = (new Date(b.timestamp)).getTime();
+
+        return aDate - bDate
+    })
+  }, [data]);
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div className="container">
         <div>
+          <div className="grid-container">
+            <PriceOverTime
+              data={orderedData}
+            />
+            <DailyAvgPrice
+              data={orderedData}
+            />
+            <AvgPricePerLocation
+              data={orderedData}
+              locationFilter={location}
+            />
+            <ComparePrices
+              data={orderedData}
+              locationFilter={location}
+            />
+          </div>
           {successMessage && <p>{successMessage}</p>}
           {errorMsg && <p>{errorMsg}</p>}
           <h2>Price sync</h2>
@@ -58,10 +97,10 @@ function App() {
             <DatePicker value={startDate} onChange={(newVal) => setStartDate(newVal)}/>
             <p> to </p>
             <DatePicker value={endDate} onChange={(newVal) => setEndDate(newVal)}/>
-            <select onChange={(e) => setLocation(e.target.value as 'ee' | 'lv' | 'fi')}>
-              <option value="ee">EE</option>
-              <option value="lv">LV</option>
-              <option value="fi">FI</option>
+            <select onChange={(e) => setLocation(e.target.value as 'EE' | 'LV' | 'FI')}>
+              <option value="EE">EE</option>
+              <option value="LV">LV</option>
+              <option value="FI">FI</option>
             </select>
           </div>
           <div>
